@@ -159,7 +159,10 @@ public class ThetaQuantowerBridgeV2 : Plugin
             var query = context.Request.QueryString;
             switch (path)
             {
-                case "/health": await WriteAsync(context, new { apiVersion = "2", connected = Core.Instance?.Connections?.Any(connection => connection.State == ConnectionState.Connected) == true, symbols = Core.Instance?.Symbols?.Count ?? 0, connections = Core.Instance?.Connections?.Count ?? 0, stream = true, execution = "disabled" }); break;
+                case "/health":
+                    var connectionHealth = GetConnectionHealth();
+                    await WriteAsync(context, new { apiVersion = "2", connected = connectionHealth.Connected, symbols = Core.Instance?.Symbols?.Count ?? 0, connections = connectionHealth.Count, stream = true, execution = "disabled" });
+                    break;
                 case "/symbols": await WriteAsync(context, GetSymbols()); break;
                 case "/quote": await WriteAsync(context, GetQuote(query["symbol"])); break;
                 case "/trades": await WriteAsync(context, GetTrades(query["symbol"], ParseLong(query["after"]), ParseInt(query["limit"], 1_000))); break;
@@ -213,12 +216,29 @@ public class ThetaQuantowerBridgeV2 : Plugin
             ticker = symbol.Name,
             id = symbol.Id,
             description = symbol.Description,
-            path = symbol.Exchange?.Name,
+            path = symbol.Exchange?.ExchangeName,
             type = symbol.SymbolType.ToString(),
             digits = symbol.GetType().GetProperty("Digits")?.GetValue(symbol),
             point = symbol.TickSize,
             currency = symbol.QuotingCurrency?.Name
         }).ToArray();
+    }
+
+    private static (bool Connected, int Count) GetConnectionHealth()
+    {
+        var manager = Core.Instance?.Connections;
+        if (manager is null) return (false, 0);
+        var collection = manager.GetType().GetProperty("Connections")?.GetValue(manager) as IEnumerable;
+        if (collection is null) return (true, 0);
+        var count = 0;
+        var connected = false;
+        foreach (var item in collection)
+        {
+            if (item is null) continue;
+            count++;
+            connected |= string.Equals(item.GetType().GetProperty("State")?.GetValue(item)?.ToString(), "Connected", StringComparison.OrdinalIgnoreCase);
+        }
+        return (connected, count);
     }
 
     private object GetQuote(string? symbolName)
