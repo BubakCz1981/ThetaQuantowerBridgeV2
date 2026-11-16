@@ -161,7 +161,7 @@ public class ThetaQuantowerBridgeV2 : Plugin
             {
                 case "/health":
                     var connectionHealth = GetConnectionHealth();
-                    await WriteAsync(context, new { apiVersion = "2", connected = connectionHealth.Connected, symbols = Core.Instance?.Symbols?.Count ?? 0, connections = connectionHealth.Count, stream = true, execution = "disabled" });
+                    await WriteAsync(context, new { apiVersion = "2", connected = connectionHealth.Connected, symbols = Core.Instance?.Symbols?.Count() ?? 0, connections = connectionHealth.Count, stream = true, execution = "disabled" });
                     break;
                 case "/symbols": await WriteAsync(context, GetSymbols()); break;
                 case "/quote": await WriteAsync(context, GetQuote(query["symbol"])); break;
