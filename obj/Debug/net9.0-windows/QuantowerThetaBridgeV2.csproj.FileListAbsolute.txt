@@ -1,0 +1,5 @@
+D:\Programy\Trading\Theta_Tauri_V1\quantower-plugin-v2\obj\Debug\net9.0-windows\QuantowerThetaBridgeV2.csproj.AssemblyReference.cache
+D:\Programy\Trading\Theta_Tauri_V1\quantower-plugin-v2\obj\Debug\net9.0-windows\QuantowerThetaBridgeV2.GeneratedMSBuildEditorConfig.editorconfig
+D:\Programy\Trading\Theta_Tauri_V1\quantower-plugin-v2\obj\Debug\net9.0-windows\QuantowerThetaBridgeV2.AssemblyInfoInputs.cache
+D:\Programy\Trading\Theta_Tauri_V1\quantower-plugin-v2\obj\Debug\net9.0-windows\QuantowerThetaBridgeV2.AssemblyInfo.cs
+D:\Programy\Trading\Theta_Tauri_V1\quantower-plugin-v2\obj\Debug\net9.0-windows\QuantowerThetaBridgeV2.csproj.CoreCompileInputs.cache
